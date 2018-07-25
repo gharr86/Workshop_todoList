@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <style>
+        #ordenarPor {
+            display: none;
+        }
+    </style>
+    <script src="main.js"></script>
+</head>
+
+<body class="d-flex flex-column justify-content-center align-items-center">
+    <div class="jumbotron container">
+        <div class="row d-flex justify-content-around">
+            <div class="col-md-6">
+                <h2 class="text-center">Ingreso </h2>
+                <form id="formIngreso">
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <input type="text" class="form-control" id="inputTitulo" placeholder="Titulo">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <textarea class="form-control" id="inputDescripcion" placeholder="Descripcion" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <button type="button" class="btn btn-block btn-outline-info" onclick="nuevaTarea()">Agregar</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <button type="button" class="btn btn-block btn-outline-warning" onclick="mostrarTodo()">Mostrar Todo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-center">Busqueda</h2>
+                <form id="formBusqueda">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <input type="text" class="form-control" id="inputId" placeholder="ID">
+                        </div>
+                        <div class="form-group col-6">
+                            <button type="button" class="btn btn-primary" onclick="mostrarTarea()">Buscar</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <input type="text" class="form-control" id="inputTituloBuscado" placeholder="Titulo" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <textarea class="form-control" id="inputDescripcionBuscado" placeholder="Descripcion" rows="3" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <button type="button" class="btn btn-warning btn-block" id="editarBtn" onclick="activarEdicion()" disabled>Editar</button>
+                        </div>
+                        <div class="form-group col-6">
+                            <button type="button" class="btn btn-success btn-block" id="modificarBtn" onclick="modificarTarea()" disabled>Guardar</button>
+                        </div>
+                        <!-- <div class="form-group col-3">
+                            <button type="button" class="btn btn-danger btn-block" id="eliminarBtn" onclick="eliminarTarea()" disabled>Eliminar</button>
+                        </div>
+                        <div class="form-group col-3">
+                            <button type="button" class="btn btn-dark btn-block" id="eliminarTodoBtn" onclick="eliminarTodo()">Eliminar Todo</button>
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="ordenarPor">
+        <div class="form-group col-3">
+            <div class="input-group">
+                <select class="custom-select" id="inputGroupSelect01">
+                    <option value="" selected>Ordenar por</option>
+                    <option value="1">titulo A-Z</option>
+                    <option value="2">titulo Z-A</option>
+                    <option value="3">ID</option>
+                </select>
+                <button type="button" class="btn btn-outline-success" onclick="ordenarTareas()">Ordenar</button>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-dark btn-block" id="eliminarTodoBtn" onclick="eliminarTodo()">Eliminar Todo</button>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12">
+        <div class="col-lg-6">
+            <h1 class="text-center">Por Completar</h1>
+            <div id="tareasPorCompletar"></div>
+        </div>
+        <div class="col-lg-6">
+            <h1 class="text-center">Completadas</h1>
+            <div id="tareasCompletadas"></div>
+        </div>
+    </div>
+</body>
+
+</html>
