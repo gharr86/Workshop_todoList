@@ -17,22 +17,22 @@ function constructorTarea(_titulo, _descripcion, _id) {
 }
 
 function getTareas() {
-    var tareasGuardadas = localStorage.getItem('arrayTareas');
+    var tareasGuardadas = localStorage.getItem('arrayTareas2');
     arrayTareas = JSON.parse(tareasGuardadas);
     return arrayTareas;
 }
 
 function guardarTareas(arrayTareas) {
     var tareasString = JSON.stringify(arrayTareas);
-    localStorage.setItem('arrayTareas', tareasString);
+    localStorage.setItem('arrayTareas2', tareasString);
 }
 
 function nuevaTarea() {
-    var titulo = document.getElementById('inputTitulo').value;
-    var descripcion = document.getElementById('inputDescripcion').value;
-    if (localStorage.arrayTareas != undefined) {
+    var titulo = $('#inputTitulo').val(); 
+    var descripcion = $('#inputDescripcion').val();
+    if (localStorage.arrayTareas2 != undefined) {
         var arrayTareas = getTareas();
-        var id = arrayTareas.length + 1;
+        var id = $('div.card').length + 1;
         id = id.toString();
     } else {
         var id = 1;
@@ -40,12 +40,14 @@ function nuevaTarea() {
     }
 
     agregarTarea(titulo, descripcion, id);
+
+    mostrarTodo();
 }
 
 function agregarTarea(titulo, descripcion, id) {
     var tarea = new constructorTarea(titulo, descripcion, id);
 
-    if (localStorage.arrayTareas == undefined) {
+    if (localStorage.arrayTareas2 == undefined) {
         var arrayTareas = [];
         arrayTareas.push(tarea);
     } else {
@@ -53,7 +55,7 @@ function agregarTarea(titulo, descripcion, id) {
         arrayTareas.push(tarea);
     }
     guardarTareas(arrayTareas);
-    document.getElementById('formIngreso').reset();
+    $('#formIngreso')[0].reset();
 }
 
 function buscarTarea(array, id) {
@@ -67,7 +69,7 @@ function buscarTarea(array, id) {
 
 function toggleCompletar(tarea) {
     var arrayTareas = getTareas();
-    var idSeleccionado = tarea.parentElement.nextSibling.innerText;
+    var idSeleccionado = $(tarea).parent().next().text();
     var indexSeleccionado = buscarTarea(arrayTareas, idSeleccionado);
     if (arrayTareas[indexSeleccionado].completado == false) {
         arrayTareas[indexSeleccionado].completado = true;
@@ -79,64 +81,63 @@ function toggleCompletar(tarea) {
 }
 
 function mostrarTodo() {
-    if (localStorage.arrayTareas != undefined) {
+    if (localStorage.arrayTareas2 != undefined) {
         var arrayTareas = getTareas();
-        var listaPorCompletar = document.getElementById('tareasPorCompletar');
-        listaPorCompletar.innerHTML = '';
-        var listaCompletadas = document.getElementById('tareasCompletadas');
-        listaCompletadas.innerHTML = '';
+        var listaPorCompletar = $('#tareasPorCompletar');
+        listaPorCompletar.text('');
+        var listaCompletadas = $('#tareasCompletadas');
+        listaCompletadas.text('');
 
         for (i = 0; i < arrayTareas.length; i++) {
             if (arrayTareas[i].completado == false) {
-                listaPorCompletar.innerHTML += '<div class="card text-center mb-3" data-id="' + arrayTareas[i].id + '">' +
-                    '<div class="card-body">' +
-                    '<button type="button" class="close" aria-label="Close" onclick="eliminarTarea(' + arrayTareas[i].id + ')">' +
-                    '<span aria-hidden="true">&times;</span>' +
-                    '</button>' +
-                    '<h5 class="card-title">' +
-                    arrayTareas[i].titulo +
-                    '</h5>' +
-                    '<p class="card-text">' +
-                    arrayTareas[i].descripcion +
-                    '</p>' +
-                    '<button type="button" class="btn btn-outline-warning" onclick="toggleCompletar(this)">Completar</button>' +
-                    '</div>' +
-                    '<div class="card-footer text-muted">' +
-                    arrayTareas[i].id +
-                    '</div>' +
-                    '</div>';
+                listaPorCompletar.append('<div class="card text-center mb-3" data-id="' + arrayTareas[i].id + '">' + 
+                                            '<div class="card-body">' + 
+                                                '<button type="button" class="close" aria-label="Close" onclick="eliminarTarea(' + arrayTareas[i].id +')">' +
+                                                    '<span aria-hidden="true">&times;</span>' +
+                                                '</button>' +
+                                                '<h5 class="card-title">' + 
+                                                    arrayTareas[i].titulo + 
+                                                '</h5>' + 
+                                                '<p class="card-text">' + 
+                                                    arrayTareas[i].descripcion + 
+                                                '</p>' + 
+                                                '<button type="button" class="btn btn-outline-warning" onclick="toggleCompletar(this)">Completar</button>' + 
+                                            '</div>' + 
+                                            '<div class="card-footer text-muted">' + 
+                                                arrayTareas[i].id + 
+                                            '</div>' + 
+                                        '</div>');
             } else {
-                listaCompletadas.innerHTML += '<div class="card text-center mb-3" data-id="' + arrayTareas[i].id + '">' +
-                    '<div class="card-body">' +
-                    '<button type="button" class="close" aria-label="Close" onclick="eliminarTarea(' + arrayTareas[i].id + ')">' +
-                    '<span aria-hidden="true">&times;</span>' +
-                    '</button>' +
-                    '<h5 class="card-title">' +
-                    arrayTareas[i].titulo +
-                    '</h5>' +
-                    '<p class="card-text">' +
-                    arrayTareas[i].descripcion +
-                    '</p>' +
-                    '<button type="button" class="btn btn-success" onclick="toggleCompletar(this)">Completado</button>' +
-                    '</div>' +
-                    '<div class="card-footer text-muted">' +
-                    arrayTareas[i].id +
-                    '</div>' +
-                    '</div>';
+                listaCompletadas.append('<div class="card text-center mb-3" data-id="' + arrayTareas[i].id + '">' + 
+                                            '<div class="card-body">' + 
+                                                '<button type="button" class="close" aria-label="Close" onclick="eliminarTarea(' + arrayTareas[i].id +')">' +
+                                                    '<span aria-hidden="true">&times;</span>' +
+                                                '</button>' +
+                                                '<h5 class="card-title">' + 
+                                                    arrayTareas[i].titulo + 
+                                                '</h5>' + 
+                                                '<p class="card-text">' + 
+                                                    arrayTareas[i].descripcion + 
+                                                '</p>' + 
+                                                '<button type="button" class="btn btn-success" onclick="toggleCompletar(this)">Completado</button>' + 
+                                            '</div>' + 
+                                            '<div class="card-footer text-muted">' + 
+                                                arrayTareas[i].id + 
+                                            '</div>' + 
+                                        '</div>');
             }
         }
-
-        document.getElementById('ordenarPor').style.display = 'block';
-    } else {        
-        var listaPorCompletar = document.getElementById('tareasPorCompletar');
-        listaPorCompletar.innerHTML = '';
+        
+        $('#ordenarPor').show()
+    } else {
+        var listaPorCompletar = $('#tareasPorCompletar');
+        listaPorCompletar.text('');
     }
 }
 
 function ordenarTareas() {
     var arrayTareas = getTareas();
-    var criterio = document.getElementById('inputGroupSelect01').value;
-
+    var criterio = $('#inputGroupSelect01').val();
     if (criterio !== '') {
         if (criterio == '1' || criterio == '2') {
             arrayTareas.sort(function (a, b) {
@@ -167,37 +168,38 @@ function ordenarTareas() {
 //Edicion--------------------------------------------------------
 
 function mostrarTarea() {
-    if (localStorage.arrayTareas != undefined) {
+    if (localStorage.arrayTareas2 != undefined) {
         var arrayTareas = getTareas();
-        var id = document.getElementById('inputId').value;
+        var id = $('#inputId').val();
         var indexBuscado = buscarTarea(arrayTareas, id);
-        document.getElementById('inputTituloBuscado').value = arrayTareas[indexBuscado].titulo;
-        document.getElementById('inputDescripcionBuscado').value = arrayTareas[indexBuscado].descripcion;
+        $('#inputTituloBuscado').val(arrayTareas[indexBuscado].titulo);
+        $('#inputDescripcionBuscado').val(arrayTareas[indexBuscado].descripcion);
 
-        document.getElementById('inputId').disabled = true;
-        document.getElementById('editarBtn').disabled = false;
+        $('#inputId').prop('disabled', true);
+        $('#editarBtn').prop('disabled', false);
+        $('#eliminarBtn').prop('disabled', false);
     }
 }
 
 function activarEdicion() {
-    document.getElementById('inputTituloBuscado').disabled = false;
-    document.getElementById('inputDescripcionBuscado').disabled = false;
-    document.getElementById('modificarBtn').disabled = false;
-    document.getElementById('inputId').disabled = true;
+    $('#inputTituloBuscado').prop('disabled', false);
+    $('#inputDescripcionBuscado').prop('disabled', false);
+    $('#modificarBtn').prop('disabled', false);
+    $('#inputId').prop('disabled', true);
 }
 
 function modificarTarea() {
     var arrayTareas = getTareas();
-    var id = document.getElementById('inputId').value;
+    var id = $('#inputId').val();
     var indexBuscado = buscarTarea(arrayTareas, id);
-    var nuevoTitulo = document.getElementById('inputTituloBuscado').value;
-    var nuevaDescripcion = document.getElementById('inputDescripcionBuscado').value;
+    var nuevoTitulo = $('#inputTituloBuscado').val();
+    var nuevaDescripcion = $('#inputDescripcionBuscado').val();
 
     arrayTareas[indexBuscado].titulo = nuevoTitulo;
     arrayTareas[indexBuscado].descripcion = nuevaDescripcion;
 
     guardarTareas(arrayTareas);
-    if (document.getElementById('tareasPorCompletar').innerHTML !== '' || document.getElementById('tareasCompletadas').innerHTML !== '') {
+    if ($('#tareasPorCompletar').text() !== '' || $('#tareasCompletadas').text() !== '') {
         mostrarTodo()
     }
 
@@ -214,7 +216,7 @@ function eliminarTarea(id) {
         guardarTareas(arrayTareas);
     }
 
-    if (document.getElementById('tareasPorCompletar').innerHTML !== '' || document.getElementById('tareasCompletadas').innerHTML !== '') {
+    if ($('#tareasPorCompletar').text() !== '' || $('#tareasCompletadas').text() !== '') {
         mostrarTodo()
     }
 
@@ -222,22 +224,24 @@ function eliminarTarea(id) {
 }
 
 function eliminarTodo() {
-    if (localStorage.arrayTareas != undefined) {
-        localStorage.removeItem('arrayTareas');
+    if (localStorage.arrayTareas2 != undefined) {
+        localStorage.removeItem('arrayTareas2');
     }
 
-    if (document.getElementById('tareasPorCompletar').innerHTML !== '' || document.getElementById('tareasCompletadas').innerHTML !== '') {
+    if ($('#tareasPorCompletar').text() !== '' || $('#tareasCompletadas').text() !== '') {
         mostrarTodo()
     }
-    
+
+    $('#ordenarPor').hide();
     resetearFormBusqueda();
 }
 
 function resetearFormBusqueda() {
-    document.getElementById('formBusqueda').reset();
-    document.getElementById('inputId').disabled = false;
-    document.getElementById('inputTituloBuscado').disabled = true;
-    document.getElementById('inputDescripcionBuscado').disabled = true;
-    document.getElementById('editarBtn').disabled = true;
-    document.getElementById('modificarBtn').disabled = true;
+    $('#formBusqueda')[0].reset();
+    $('#inputId').prop('disabled', false);
+    $('#inputTituloBuscado').prop('disabled', true);
+    $('#inputDescripcionBuscado').prop('disabled', true);
+    $('#editarBtn').prop('disabled', true);
+    $('#modificarBtn').prop('disabled', true);
+    $('#eliminarBtn').prop('disabled', true);
 }
